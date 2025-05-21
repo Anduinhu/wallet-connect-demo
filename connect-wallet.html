@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>MetaMask Connect Test</title>
+</head>
+<body>
+  <h2>🔗 Connect Wallet</h2>
+  <button id="connectBtn">Connect Wallet</button>
+  <p id="status">Wallet status will appear here</p>
+
+  <script>
+    async function connect() {
+      const status = document.getElementById("status");
+      if (typeof window.ethereum === 'undefined') {
+        status.innerText = "❌ MetaMask not found. Please install it.";
+        return;
+      }
+
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+        status.innerText = `✅ Connected to ${accounts[0]}\nChain ID: ${chainId}`;
+      } catch (err) {
+        status.innerText = `❌ Error: ${err.message}`;
+      }
+    }
+
+    document.getElementById("connectBtn").onclick = connect;
+  </script>
+</body>
+</html>
